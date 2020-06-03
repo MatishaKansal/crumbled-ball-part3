@@ -1,26 +1,30 @@
-class Launcher{
-  constructor(bodyA, pointB) {
+class Launcher {
+  constructor(body, anchor) {
     var options = {
-      bodyA: bodyA,
-      pointB: pointB,
-      stiffness: 0.01,
-      length: 10,
+      bodyA: body,
+      pointB: anchor,
+      stiffness: 0.001,
+      length: 5,
     };
-    this.pointB = pointB;
-    this.sling = Constraint.create(options);
-    World.add(world, this.sling);
+
+    this.bodyA = body;
+    this.pointB = anchor;
+    this.launcher = Constraint.create(options);
+    World.add(world, this.launcher);
   }
 
-  fly() {
-    this.sling.bodyA = null;
-  }
   display() {
-    if(this.sling.bodyA){
-      var pointA = this.sling.bodyA.position;
-      var pointB = this.sling.pointB;
-      strokeWeight(4);
+    if (this.launcher.bodyA) {
+      var pointA = this.bodyA.position;
+      var pointB = this.pointB;
+
+      strokeWeight(2);
+      //stroke(240,240,240);
       line(pointA.x, pointA.y, pointB.x, pointB.y);
-   }
-}
-pop();
+    }
+  }
+  fly() {
+    //World.remove(world,this.rope)
+    this.launcher.bodyA = null;
+  }
 }

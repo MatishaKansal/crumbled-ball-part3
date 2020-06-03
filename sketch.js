@@ -1,58 +1,59 @@
-// var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
-// var packageBody,ground
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
 const Render = Matter.Render;
 const Constraint = Matter.Constraint;
-// function preload() {}
-
-var sling;
+var dustbin, paper, ground, launcher;
+var launchingForce = 100;
+var lastMouseX = null;
+var lastMouseY = null;
 
 function setup() {
-  createCanvas(1200, 600);
+  createCanvas(900, 700);
+  rectMode(CENTER);
+
   engine = Engine.create();
   world = engine.world;
 
-  //packageBody = Bodies.circle(width/2 , 200 , 5 , {restitution:1.5, isStatic:false});
-  //World.add(world, packageBody);
+  paper = new Paper(200, 450, 60);
+  ground = new Ground(width / 2, 670, width, 20);
+  dustbin = new Box(700, 650);
+  //powerdisp=new powerdisplay(200,200,100);
+  launcher = new Launcher(paper.body, { x: 300, y: 100 });
+  //Create a Ground
 
-  box = new Box(900, 577, 200, 200);
+  var render = Render.create({
+    element: document.body,
+    engine: engine,
+    options: {
+      width: 100,
+      height: 100,
+      wireframes: false,
+    },
+  });
 
-  //   Create a Ground
-  //     ground = Bodies.rectangle(width / 2, 600, width, 10, { isStatic: true });
-  //     World.add(world, ground);
-  paper = new Paper(300, 100, 75, 75);
-  ground = new Ground(600, height, 1200, 20);
-  // sling = new Launcher(paper.body, { x: 200, y: 200 });
-  // slingshot = new Launcher(paper.body, { x: 200, y: 50 });
-  // Engine.run(engine);
+  Engine.run(engine);
+  //Render.run(render);
 }
 
 function draw() {
-  background(220, 220, 220);
-  Matter.Engine.update(engine);
-  rectMode(CENTER);
-  ground.display();
-  box.display();
-  paper.display();
-  slingshot.display();
-  //   drawSprites();
-}
+  //rectMode(CENTER);
+  background(230);
 
-function keyPressed() {
-  if (keyCode === UP_ARROW) {
-    Matter.Body.applyForce(paper.body, paper.body.position, {
-      x: 270,
-      y: -270,
-    });
-  }
+  Engine.update(engine);
+
+  ground.display();
+  dustbin.display();
+  paper.display();
+  //powerdisp.display(launchingForce);
+  launcher.display();
 }
 
 function mouseDragged() {
-  Matter.body.setPosition(paper.body, { x: mouseX, y: mouseY });
+  Matter.Body.setPosition(paper.body, { x: mouseX, y: mouseY });
 }
+
 function mouseReleased() {
-  sling.fly();
+  launcher.fly();
 }

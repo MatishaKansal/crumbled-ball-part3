@@ -2,8 +2,8 @@ class Box {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.dustbinWidth = 200;
-    this.dustbinHeight = 213;
+    this.dustbinWidth = 150;
+    this.dustbinHeight = 173;
     this.wallThickness = 20;
 
     this.image = loadImage("dustbingreen.png");
